@@ -131,7 +131,7 @@ const config: (
       href: '/presale',
       icon: PresaleIcon,
       fillIcon: PresaleIcon,
-      supportChainIds: POOL_SUPPORTED_CHAINS,
+      // supportChainIds: POOL_SUPPORTED_CHAINS,
       image: '/images/decorations/nft.png',
       items: [],
     },
