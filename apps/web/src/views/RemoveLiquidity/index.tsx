@@ -256,8 +256,8 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       throw new Error('could not wrap')
     }
 
-    let methodNames: string[]
-    let args
+    let methodNames: string[] = []
+    let args = []
     // we have approval, use normal remove liquidity
     if (approval === ApprovalState.APPROVED) {
       // removeLiquidityETH
@@ -326,9 +326,12 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
-    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint }
+    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: bigint } = {
+      methodName: '',
+      safeGasEstimate: null,
+    }
     for (let i = 0; i < methodNames.length; i++) {
-      let safeGasEstimate
+      let safeGasEstimate = null
       try {
         // eslint-disable-next-line no-await-in-loop
         safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](args, { account }))
@@ -342,7 +345,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       }
     }
 
-    // all estimations failed...
     if (!methodSafeGasEstimate) {
       toastError(t('Error'), t('This transaction would fail'))
     } else {
